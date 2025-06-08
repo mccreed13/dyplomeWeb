@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+</head>
+<body>
+<div class="header text-bg-dark" th:fragment="header">
+    <a style="pointer-events: none;" class="logo">FastCook Administration</a>
+    <div class="header-right">
+        <a th:classappend="${module == 'home' ? 'active' : ''}" th:href="@{/receipts}">До користувача</a>
+        <a th:classappend="${module == 'generalProducts' ? 'active' : ''}" th:href="@{/admin/generalProducts}">Загальні
+            продукти</a>
+        <a th:classappend="${module == 'shopGeneralProducts' ? 'active' : ''}" th:href="@{/admin/shopGeneralProducts}">Магазинні та
+            загальні продукти</a>
+    </div>
+</div>
+</body>
+</html>

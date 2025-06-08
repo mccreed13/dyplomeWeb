@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link th:href="@{/styles/header.css}" rel="stylesheet" />
+</head>
+<body>
+<div class="header" th:fragment="header">
+    <a style="pointer-events: none;" class="logo">FastCook</a>
+    <div class="header-right">
+        <a th:classappend="${module == 'receipts' ? 'active' : ''}" th:href="@{/receipts}">Рецепти</a>
+        <a th:classappend="${module == 'products' ? 'active' : ''}" th:href="@{/products}">Продукти</a>
+        <a th:classappend="${module == 'receiptForm' ? 'active' : ''}" th:href="@{/receipts/create}">Створити свій рецепт</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipts</title>
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.min.js"
+            integrity="sha384-RuyvpeZCxMJCqVUGFI0Do1mQrods/hhxYlcVfGPOfQtPJh0JCw12tUAZ/Mv10S7D"
+            crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+
+        .container {
+            padding-top: 20px;
+        }
+
+        #addIngredient {
+            margin-top: 50px;
+            width: 100px;
+        }
+    </style>
+    <script>
+        var ingrCount = 0;
+
+        function addRow() {
+            const tableBody = document.querySelector("#ingredientTable tbody");
+
+            const newRow = document.createElement("tr");
+            const numberCell = document.createElement("th");
+            const numberValue = document.createElement("p");
+            numberValue.innerText = String(ingrCount+1);
+            numberCell.appendChild(numberValue)
+            // Create custom cells
+            const nameCell = document.createElement("td");
+            const nameValue = document.createElement("input");
+            const nameValueOld = document.querySelector("#nameIngredient");
+            nameValue.innerHTML = nameValueOld.value;
+            nameValue.setAttribute("type", "hidden");
+            nameValue.setAttribute("name", "ingredients["+ingrCount+"].ingredientName");
+            nameValue.setAttribute("value", nameValueOld.value);
+            nameCell.appendChild(nameValue)
+
+            const categoryCell = document.createElement("td");
+            const categoryName = document.querySelector("#myCategorySpan");
+            const categoryID = document.querySelector("#myCategoryInput");
+            const categoryValue = document.createElement("div");
+            categoryValue.innerHTML = categoryName.innerHTML;
+            const categoryInput = document.createElement("input");
+            categoryInput.setAttribute("type", "hidden");
+            categoryInput.setAttribute("name", "ingredients["+ingrCount+"].category_id");
+            categoryInput.setAttribute("value", categoryID.getAttribute("value"));
+
+
+            categoryCell.appendChild(categoryValue)
+            categoryCell.appendChild(categoryInput)
+            // Append cells to row
+            newRow.appendChild(numberCell);
+            newRow.appendChild(nameCell);
+            newRow.appendChild(categoryCell);
+            // Append row to table body
+            tableBody.appendChild(newRow);
+            ingrCount+=1;
+        }
+
+        $(document).ready(function () {
+            $('.dropdown-submenu a.test').on("click", function (e) {
+                $(this).next('ul').toggle();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        });
+
+        function changeText(newText, valueText) {
+            document.getElementById("myCategorySpan").textContent = newText;
+            document.getElementById("myCategoryInput").value = valueText;
+        }
+    </script>
+</head>
+<body>
+<div th:replace="fragments/header :: header"></div>
+<div class="container">
+    <form method="post" th:object="${receipt}" th:action="@{/receipts/create}">
+        <div class="form-group">
+            <label for="authorName">Автор</label>
+            <input type="text" class="form-control" id="authorName" th:field="*{author}"/>
+        </div>
+        <div class="form-group">
+            <label for="nameReceipt">Ім'я</label>
+            <input type="text" class="form-control" id="nameReceipt" th:field="*{name}"/>
+        </div>
+        <div class="form-group">
+            <label for="description" class="form-label">Опис</label>
+            <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Інгредієнти</label>
+            <div id="ingredients" class="border container">
+                <div class="row">
+                    <div class="col">
+                        <label for="nameIngredient">Назва інгредієнту</label>
+                        <input type="text" id="nameIngredient" class="form-control"/>
+                    </div>
+                    <div class="col">
+                        <label for="categoryProduct">Категорія інгредієнту</label>
+                        <div id="categoryProduct" class="dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                                <span id="myCategorySpan">Категорія</span>
+                                <input type="hidden" id="myCategoryInput" th:value="0">
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-submenu" th:each="categoryEnt : ${categories.entrySet()}">
+                                    <a class="test" tabindex="-1" href="#">
+                                        <span th:text="${categoryEnt.getKey().name()}"></span>
+                                        <span th:if="${categoryEnt.getValue() != null}" class="caret"></span>
+                                    </a>
+                                    <ul th:each="subCategoryEnt : ${categoryEnt.getValue().entrySet()}"
+                                        class="dropdown-menu">
+                                        <li class="dropdown-submenu">
+                                            <a class="test" href="#">
+                                                <span th:text="${subCategoryEnt.getKey().name()}"></span>
+                                                <span th:if="${subCategoryEnt.getValue() != null}" class="caret"></span>
+                                            </a>
+                                            <ul class="dropdown-menu">
+                                                <li th:each="subsubCategoryEnt : ${subCategoryEnt.getValue()}">
+                                                    <a class="choise"
+                                                       th:attr="onclick=|changeText('${subsubCategoryEnt.name()}','${subsubCategoryEnt.id()}')|"
+                                                       th:text="${subsubCategoryEnt.name()}"></a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-secondary" id="addIngredient" onclick="addRow()">
+                        Додати інгредієнт
+                    </button>
+                </div>
+
+            </div>
+            <table id="ingredientTable" class="table">
+                <thead>
+                <tr>
+                    <th scope="col">№</th>
+                    <th scope="col">Назва</th>
+                    <th scope="col">Категорія</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="ingeredient, itemStat : *{ingredients}">
+                    <td>
+                        <input hidden th:name="|ingredients[${itemStat.index}].id|" th:value="${ingeredient.id()}"/>
+                    </td>
+                    <td>
+                        <input hidden th:name="|ingredients[${itemStat.index}].ingredientName|" th:value="${ingeredient.ingredientName()}"/>
+                    </td>
+                    <td>
+                        <input th:name="|ingredients[${itemStat.index}].category_id|" th:value="${ingeredient.category_id()}"/>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <button type="submit" class="btn btn-info rounded-pill px-3" style="margin-top: 50px;">
+                Створити запит на рецепт
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

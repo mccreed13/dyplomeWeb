@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Продукт</title>
+    <link th:href="@{/styles/headerAdmin.css}" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+        .dropdown-submenu .dropdown-menu {
+            top: 0;
+            left: 100%;
+            margin-top: -1px;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-submenu a.test').on("click", function (e) {
+                $(this).next('ul').toggle();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+        });
+
+        function changeText(newText, valueText) {
+            document.getElementById("myCategorySpan").textContent = newText;
+            document.getElementById("myCategoryInput").value = valueText;
+        }
+
+        function changeTextUnits(newText, valueText) {
+            document.getElementById("myUnitsSpan").textContent = newText;
+            document.getElementById("myUnitsInput").value = valueText;
+        }
+    </script>
+</head>
+<body>
+<div th:replace="fragments/headerAdmin :: header"></div>
+<div class="container">
+    <form method="post" th:object="${product}" th:action="@{/admin/generalProducts/{baseUrl}(baseUrl=${product.id()})}">
+        <div class="form-group">
+            <label for="idProduct">ID</label>
+            <input type="text" class="form-control" id="idProduct" th:readonly="true" th:value="*{id}"
+                   th:field="*{id}"/>
+        </div>
+        <div class="form-group">
+            <label for="nameProduct">Ім'я</label>
+            <input type="text" class="form-control" id="nameProduct" th:value="*{name}" th:field="*{name}"/>
+        </div>
+        <div class="form-group">
+            <label for="categoryProduct">Категорія</label>
+            <div id="categoryProduct" class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span id="myCategorySpan" th:text="${categoryName}"></span>
+                    <input type="hidden" id="myCategoryInput" th:value="*{category}" th:field="*{category}">
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-submenu" th:each="categoryEnt : ${categories.entrySet()}">
+                        <a class="test" tabindex="-1" href="#">
+                            <span th:text="${categoryEnt.getKey().name()}"></span>
+                            <span th:if="${categoryEnt.getValue() != null && !categoryEnt.getValue().values().isEmpty()}" class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" th:if="${categoryEnt.getValue() != null && !categoryEnt.getValue().values().isEmpty()}">
+                            <li th:each="subCategoryEnt : ${categoryEnt.getValue().entrySet()}"  class="dropdown-submenu">
+                                <a class="test" href="#">
+                                    <span th:text="${subCategoryEnt.getKey().name()}"></span>
+                                    <span th:if="${subCategoryEnt.getValue() != null && !subCategoryEnt.getValue().isEmpty()}" class="caret"></span>
+                                </a>
+                                <ul th:if="${subCategoryEnt.getValue() != null && !subCategoryEnt.getValue().isEmpty()}" class="dropdown-menu">
+                                    <li th:each="subsubCategoryEnt : ${subCategoryEnt.getValue()}">
+                                        <a class="choise"
+                                           th:attr="onclick=|changeText('${subsubCategoryEnt.name()}','${subsubCategoryEnt.id()}')|"
+                                           th:text="${subsubCategoryEnt.name()}"></a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="unitsProduct">Одиниці</label>
+            <div id="unitsProduct" class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span id="myUnitsSpan" th:text="${unitsName}"></span>
+                    <input type="hidden" id="myUnitsInput" th:value="*{units}" th:field="*{units}">
+                    <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-submenu" th:each="unit : ${units}">
+                        <a class="choise"
+                           th:attr="onclick=|changeTextUnits('${unit.name()}','${unit.id()}')|"
+                           th:text="${unit.name()}">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="countsProduct">Кількість</label>
+            <input class="form-control" type="number" step=0.01 id="countsProduct" th:value="*{counts}"
+                   th:field="*{counts}"
+                   min="0.01"/>
+        </div>
+        <div class="form-group">
+            <label for="urlsProduct">Посилання</label>
+            <ul id="urlsProduct" class="list-group">
+                <li class="list-group-item" style="list-style-type:none;" th:each="shopPr : *{shopProducts}">
+                    <a target="_blank" rel="noopener noreferrer" th:href="${shopPr.url()}" th:text="${shopPr.brand()}"> </a>
+                </li>
+            </ul>
+        </div>
+        <button class="btn btn-info rounded-pill px-3" type="submit">Оновити</button>
+    </form>
+</div>
+</body>
+</html>
