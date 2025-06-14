@@ -31,6 +31,9 @@
             padding: 5px;
             border: 1px solid #97c57e;
         }
+        h3, h2{
+           text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -38,7 +41,8 @@
 <div class="float-container">
     <form method="POST" th:action="@{/admin}">
         <div class='float-child'>
-            <h3>Shop products</h3>
+            <h3>Магазинні продукти</h3>
+            <h2 th:text="${shopProducts.size()}"></h2>
             <table>
                 <tr>
                     <th>ID</th>
@@ -59,7 +63,8 @@
             </table>
         </div>
         <div class='float-child'>
-            <h3>General products</h3>
+            <h3>Загальні продукти</h3>
+            <h2 th:text="${generalProducts.size()}"></h2>
             <table>
                 <tr>
                     <th>ID</th>

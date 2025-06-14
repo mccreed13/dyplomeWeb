@@ -49,13 +49,15 @@
             numberCell.appendChild(numberValue)
             // Create custom cells
             const nameCell = document.createElement("td");
-            const nameValue = document.createElement("input");
-            const nameValueOld = document.querySelector("#nameIngredient");
-            nameValue.innerHTML = nameValueOld.value;
-            nameValue.setAttribute("type", "hidden");
-            nameValue.setAttribute("name", "ingredients["+ingrCount+"].ingredientName");
-            nameValue.setAttribute("value", nameValueOld.value);
-            nameCell.appendChild(nameValue)
+            const nameInput = document.createElement("input");
+            const ingredientName = document.querySelector("#nameIngredient");
+            const nameDiv = document.createElement("div");
+            nameDiv.innerHTML = ingredientName.value;
+            nameInput.setAttribute("type", "hidden");
+            nameInput.setAttribute("name", "ingredients["+ingrCount+"].ingredientName");
+            nameInput.setAttribute("value", ingredientName.value);
+            nameCell.appendChild(nameInput)
+            nameCell.appendChild(nameDiv)
 
             const categoryCell = document.createElement("td");
             const categoryName = document.querySelector("#myCategorySpan");
@@ -128,16 +130,15 @@
                                 <li class="dropdown-submenu" th:each="categoryEnt : ${categories.entrySet()}">
                                     <a class="test" tabindex="-1" href="#">
                                         <span th:text="${categoryEnt.getKey().name()}"></span>
-                                        <span th:if="${categoryEnt.getValue() != null}" class="caret"></span>
+                                        <span th:if="${categoryEnt.getValue() != null && !categoryEnt.getValue().values().isEmpty()}" class="caret"></span>
                                     </a>
-                                    <ul th:each="subCategoryEnt : ${categoryEnt.getValue().entrySet()}"
-                                        class="dropdown-menu">
-                                        <li class="dropdown-submenu">
+                                    <ul class="dropdown-menu" th:if="${categoryEnt.getValue() != null && !categoryEnt.getValue().values().isEmpty()}">
+                                        <li th:each="subCategoryEnt : ${categoryEnt.getValue().entrySet()}"  class="dropdown-submenu">
                                             <a class="test" href="#">
                                                 <span th:text="${subCategoryEnt.getKey().name()}"></span>
-                                                <span th:if="${subCategoryEnt.getValue() != null}" class="caret"></span>
+                                                <span th:if="${subCategoryEnt.getValue() != null && !subCategoryEnt.getValue().isEmpty()}" class="caret"></span>
                                             </a>
-                                            <ul class="dropdown-menu">
+                                            <ul th:if="${subCategoryEnt.getValue() != null && !subCategoryEnt.getValue().isEmpty()}" class="dropdown-menu">
                                                 <li th:each="subsubCategoryEnt : ${subCategoryEnt.getValue()}">
                                                     <a class="choise"
                                                        th:attr="onclick=|changeText('${subsubCategoryEnt.name()}','${subsubCategoryEnt.id()}')|"
