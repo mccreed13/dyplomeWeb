@@ -170,9 +170,7 @@ public class ProductWithPriceByBrandService {
                     break;
                 }
             }
-            if (nextCategory) {
-                break;
-            } else {
+            if (!nextCategory) {
                 insert2Products(productsByCount, receiptProduct.ingredientName(), atb, silpo, metro);
             }
         }
@@ -187,15 +185,15 @@ public class ProductWithPriceByBrandService {
         for (ItemWithPrice item : allByGeneralProductId) {
             switch (item.getBrand()) {
                 case ATB:
-                    atb.put(ingredientName, (ATBItem) item);
+                    atb.put(ingredientName, ATBItem.valueOf(item));
                     isAtbInsert = true;
                     break;
                 case METRO:
-                    metro.put(ingredientName, (MetroItem) item);
+                    metro.put(ingredientName, MetroItem.valueOf(item));
                     isMetroInsert = true;
                     break;
                 case SILPO:
-                    silpo.put(ingredientName, (SilpoItem) item);
+                    silpo.put(ingredientName, SilpoItem.valueOf(item));
                     isSilpoInsert = true;
                     break;
             }

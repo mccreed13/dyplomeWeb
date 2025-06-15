@@ -5,7 +5,10 @@ import com.example.dyplomeweb.entity.Receipt;
 import com.example.dyplomeweb.repository.ReceiptRepository;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,6 +26,25 @@ public class ReceiptService implements BaseService<ReceiptDTO, Receipt> {
         return receiptRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    public Map<Integer, String> getAllPhotos(){
+        Map<Integer, String> photos = new HashMap<>();
+        for (ReceiptDTO receipt : getAll()) {
+            Integer receiptId = receipt.id();
+            if(isPhotoExist(receiptId)){
+                photos.put(receiptId, receiptId+".png");
+            }else {
+                photos.put(receiptId, "noPhoto.png");
+            }
+        }
+        return photos;
+    }
+
+    private boolean isPhotoExist(Integer id){
+        String path = "C:\\Users\\alapu\\IdeaProjects\\dyplomeWeb\\src\\main\\resources\\static\\images\\receipts\\"+id+".png";
+        File file = new File(path);
+        return file.exists();
     }
 
     @Override

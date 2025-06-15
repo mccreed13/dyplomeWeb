@@ -98,14 +98,18 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
-    <form method="post" th:object="${receipt}" th:action="@{/receipts/create}">
+    <form method="post" th:object="${receipt}" th:action="@{/receipts/create}" enctype="multipart/form-data">
         <div class="form-group">
             <label for="authorName">Автор</label>
             <input type="text" class="form-control" id="authorName" th:field="*{author}"/>
         </div>
         <div class="form-group">
-            <label for="nameReceipt">Ім'я</label>
+            <label for="nameReceipt">Назва рецепту</label>
             <input type="text" class="form-control" id="nameReceipt" th:field="*{name}"/>
+        </div>
+        <div class="form-group">
+            <label for="photoReceipt">Головне фото рецепту</label>
+            <input type="file" class="form-control" id="photoReceipt" name="image" accept="image/*"/>
         </div>
         <div class="form-group">
             <label for="description" class="form-label">Опис</label>

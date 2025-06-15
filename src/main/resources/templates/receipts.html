@@ -17,19 +17,42 @@
         .container{
             padding-top: 20px;
         }
+        a:link {
+            text-decoration: none;
+            border-bottom: none;
+            -webkit-box-shadow: none;
+            box-shadow: none;
+            color: black;
+        }
     </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
-    <div class="list-group">
-        <a th:each="receipt : *{receipts}" th:href="@{'/receipts/' + ${receipt.id()}}"
-           class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1" th:text="${receipt.name}">List group item heading</h5>
-                <small th:if="${receipt.author != null}" th:text="'Автор: ' + ${receipt.author}"></small>
+<!--    <div class="list-group">-->
+<!--        <a th:each="receipt : *{receipts}" th:href="@{'/receipts/' + ${receipt.id()}}"-->
+<!--           class="list-group-item list-group-item-action" aria-current="true">-->
+<!--            <img th:src="@{${'/images/receipts/'+receipt.id()+'.png'}}" th:alt="${receipt.name()}">-->
+<!--            <div class="d-flex w-100 justify-content-between">-->
+<!--                <h5 class="mb-1" th:text="${receipt.name}">List group item heading</h5>-->
+<!--                <small th:if="${receipt.author != null}" th:text="'Автор: ' + ${receipt.author}"></small>-->
+<!--            </div>-->
+<!--            <p class="mb-1" th:text="${receipt.description}">Some placeholder content in a paragraph.</p>-->
+<!--        </a>-->
+<!--    </div>-->
+    <div th:each="receipt : *{receipts}" class="card mb-3" style="max-width: 1296px;">
+        <a  th:href="@{'/receipts/' + ${receipt.id}}"
+           class="row g-0" aria-current="true">
+            <div class="col-md-2">
+                <img th:src="@{${'/images/receipts/'+receiptsPhotos.get(receipt.id)}}" th:alt="${receipt.name}" class="img-fluid rounded-start">
             </div>
-            <p class="mb-1" th:text="${receipt.description}">Some placeholder content in a paragraph.</p>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${receipt.name}">Card title</h5>
+                    <p class="card-text"><small class="text-body-secondary" th:if="${receipt.author != null}" th:text="'Автор: ' + ${receipt.author}">Last updated 3 mins ago</small></p>
+                    <p class="card-text" th:text="${receipt.description}">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                </div>
+            </div>
         </a>
     </div>
 </div>
