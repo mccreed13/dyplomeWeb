@@ -42,7 +42,7 @@ public class ReceiptService implements BaseService<ReceiptDTO, Receipt> {
     }
 
     private boolean isPhotoExist(Integer id){
-        String path = "C:\\Users\\alapu\\IdeaProjects\\dyplomeWeb\\src\\main\\resources\\static\\images\\receipts\\"+id+".png";
+        String path = "C:\\Users\\alapu\\IdeaProjects\\dyplomeWeb\\receipts\\"+id+".png";
         File file = new File(path);
         return file.exists();
     }

@@ -44,7 +44,7 @@
         <a  th:href="@{'/receipts/' + ${receipt.id}}"
            class="row g-0" aria-current="true">
             <div class="col-md-2">
-                <img th:src="@{${'/images/receipts/'+receiptsPhotos.get(receipt.id)}}" th:alt="${receipt.name}" class="img-fluid rounded-start">
+                <img th:src="@{${'/files/'+receiptsPhotos.get(receipt.id)}}" th:alt="${receipt.name}" class="img-fluid rounded-start">
             </div>
             <div class="col-md-8">
                 <div class="card-body">

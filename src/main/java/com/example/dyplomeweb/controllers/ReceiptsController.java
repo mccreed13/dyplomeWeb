@@ -35,7 +35,7 @@ public class ReceiptsController {
     private final ReceiptProductService receiptProductService;
     private final ProductWithPriceByBrandService productWithPriceByBrandService;
     private final CategoryService categoryService;
-    private static final String UPLOAD_DIRECTORY = "C:\\Users\\alapu\\IdeaProjects\\dyplomeWeb\\src\\main\\resources\\static\\images\\receipts";
+    private static final String UPLOAD_DIRECTORY = "C:\\Users\\alapu\\IdeaProjects\\dyplomeWeb\\receipts";
 
     @GetMapping()
     public String getReceipts(Model model) {
