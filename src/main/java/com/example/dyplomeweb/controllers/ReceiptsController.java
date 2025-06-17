@@ -74,8 +74,7 @@ public class ReceiptsController {
             }
         });
         if(photoFile != null) {
-            createFile(photoFile, receiptDTOsaved.id().toString()
-            );
+            createFile(photoFile, receiptDTOsaved.id().toString());
         }
         return getReceipts(model);
     }
@@ -104,7 +103,7 @@ public class ReceiptsController {
             model.addAttribute("updatedResponse", updatedResponse);
             model.addAttribute("ingredients", receiptProductDTOS.stream().map(ReceiptProductDTO::ingredientName).toList());
             model.addAttribute("currentDate", LocalDate.now().toString());
-            System.out.println(receiptProductDTOS.stream().map(ReceiptProductDTO::ingredientName).toList());
+            model.addAttribute("photo", receiptService.getPhotoById(updatedResponse.getReceiptDTO().id()));
         }
         return "receiptById";
     }

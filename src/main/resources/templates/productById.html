@@ -42,12 +42,13 @@
                     <img th:src="@{/images/silpo.png}" alt="SILPO" class="rounded mx-auto d-block">
                 </th>
             </th:block>
-            <td th:if="${priceEntity.getOldPrice()  != null}"
+            <td th:if="${priceEntity.getOldPrice()  != null && priceEntity.getPrice() != null}"
                 th:utext="'Ціна: ' + ${priceEntity.getPrice()} + '<br />Стара ціна: ' + ${priceEntity.getOldPrice()}"></td>
-            <td th:if="${priceEntity.getOldPrice()  == null}" th:utext="'Ціна: ' + ${priceEntity.getPrice()}"></td>
+            <td th:if="${priceEntity.getOldPrice()  == null && priceEntity.getPrice() != null}" th:utext="'Ціна: ' + ${priceEntity.getPrice()}"></td>
+            <td th:if="${priceEntity.getPrice() == null}">Ціна невідома</td>
             <td th:if="${priceEntity.getIsAvailable()}">Доступний</td>
             <td th:if="${priceEntity.getIsAvailable() == null || !priceEntity.getIsAvailable()}">Не доступний</td>
-            <td><a class="btn btn-success rounded-pill px-3" th:href="${priceEntity.getUrl()}">Купити</a></td>
+            <td><a class="btn btn-success rounded-pill px-3" th:href="${priceEntity.getUrl()}">До магазину</a></td>
         </tr>
     </table>
     <div class="note mt-3 text-muted">

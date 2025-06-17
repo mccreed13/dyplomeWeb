@@ -30,15 +30,16 @@ public class ReceiptService implements BaseService<ReceiptDTO, Receipt> {
 
     public Map<Integer, String> getAllPhotos(){
         Map<Integer, String> photos = new HashMap<>();
-        for (ReceiptDTO receipt : getAll()) {
-            Integer receiptId = receipt.id();
-            if(isPhotoExist(receiptId)){
-                photos.put(receiptId, receiptId+".png");
-            }else {
-                photos.put(receiptId, "noPhoto.png");
-            }
-        }
+        getAll().forEach(r -> photos.put(r.id(), getPhotoById(r.id())));
         return photos;
+    }
+
+    public String getPhotoById(Integer receiptId){
+        if(isPhotoExist(receiptId)){
+            return receiptId+".png";
+        }else {
+            return "noPhoto.png";
+        }
     }
 
     private boolean isPhotoExist(Integer id){

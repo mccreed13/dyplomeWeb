@@ -73,7 +73,7 @@
                                 <ul th:if="${subCategoryEnt.getValue() != null && !subCategoryEnt.getValue().isEmpty()}" class="dropdown-menu">
                                     <li th:each="subsubCategoryEnt : ${subCategoryEnt.getValue()}">
                                         <a class="choise"
-                                           th:attr="onclick=|changeText('${subsubCategoryEnt.name()}','${subsubCategoryEnt.id()}')|"
+                                           th:attr="onclick=|changeText(&quot;${subsubCategoryEnt.name()}&quot;,&quot;${subsubCategoryEnt.id()}&quot;)|"
                                            th:text="${subsubCategoryEnt.name()}"></a>
                                     </li>
                                 </ul>

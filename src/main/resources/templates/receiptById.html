@@ -16,7 +16,7 @@
         .container {
             padding-top: 20px;
         }
-        img{
+        .brand{
             width: 200px;
             height: auto;
             display: block;
@@ -27,26 +27,32 @@
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
+    <div style="align-content: center; text-align: center;">
+        <img th:src="@{${'/files/'+photo}}" th:alt="${updatedResponse.getReceiptDTO().name()}" style="max-width: 20%; height: auto" class="rounded">
+        <h1  th:text="${updatedResponse.getReceiptDTO().name()}"></h1>
+    </div>
+
+    <p th:text="${updatedResponse.getReceiptDTO().description()}"></p>
     <table class="table table-bordered">
-        <h1 th:text="${updatedResponse.getReceiptDTO().name()}"></h1>
-        <p th:text="${updatedResponse.getReceiptDTO().description()}"></p>
         <tr>
             <th>Продукти</th>
-            <th><img th:src="@{/images/atb.png}" alt="ATB" class="rounded mx-auto d-block"></th>
-            <th><img th:src="@{/images/metro.png}" width="320" alt="METRO" class="rounded mx-auto d-block"></th>
-            <th><img th:src="@{/images/silpo.png}" alt="SILPO" class="rounded mx-auto d-block"></th>
+            <th><img th:src="@{/images/atb.png}" alt="ATB" class="rounded mx-auto d-block brand"></th>
+            <th><img th:src="@{/images/metro.png}" width="320" alt="METRO" class="rounded mx-auto d-block brand"></th>
+            <th><img th:src="@{/images/silpo.png}" alt="SILPO" class="rounded mx-auto d-block brand"></th>
         </tr>
-        <tr th:each="atbItem : ${updatedResponse.getAtbItems().entrySet()}">
-            <td th:utext="${atbItem.getKey()}" class="fw-bold"></td>
-            <td>
-                <a th:utext="${atbItem.getValue()?.getItemName()} + '<br />Ціна: ' + ${atbItem.getValue()?.getPrice()}" th:href="${atbItem.getValue()?.getUrl()}"></a>
+        <tr th:each="ingredient : ${ingredients}">
+            <td th:utext="${ingredient}" class="fw-bold"></td>
+            <td th:with="atbItem=${updatedResponse.getAtbItems().get(ingredient)}">
+                <a th:if="${atbItem != null}"
+                   th:utext="${atbItem?.getItemName()} + '<br />Ціна: ' + ${atbItem?.getPrice()}" th:href="${atbItem?.getUrl()}"></a>
+                <p th:unless="${atbItem != null}">Продукту за категорією не знайдено</p>
             </td>
-            <td th:with="metroItem=${updatedResponse.getMetroItems().get(atbItem.getKey())}">
+            <td th:with="metroItem=${updatedResponse.getMetroItems().get(ingredient)}">
                 <a th:if="${metroItem != null}"
                    th:utext="${metroItem?.getItemName()} + '<br />Ціна: ' + ${metroItem?.getPrice()}" th:href="${metroItem?.getUrl()}"></a>
                 <p th:unless="${metroItem != null}">Продукту за категорією не знайдено</p>
             </td>
-            <td th:with="silpoItem=${updatedResponse.getSilpoItems().get(atbItem.getKey())}">
+            <td th:with="silpoItem=${updatedResponse.getSilpoItems().get(ingredient)}">
                 <a th:if="${silpoItem != null}"
                    th:utext="${silpoItem?.getItemName()} + '<br />Ціна: ' + ${silpoItem?.getPrice()}" th:href="${silpoItem?.getUrl()}"></a>
                 <p th:unless="${silpoItem != null}">Продукту за категорією не знайдено</p>
