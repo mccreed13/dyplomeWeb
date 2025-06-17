@@ -122,7 +122,7 @@ public class AdminController {
         }else {
             log.error("General product not found by id {}", generalProductID);
         }
-        return "redirect:/admin/generalProducts";
+        return "redirect:/admin/shopGeneralProducts";
     }
 
 

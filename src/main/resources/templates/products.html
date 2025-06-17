@@ -16,7 +16,7 @@
         .container {
             padding-top: 20px;
         }
-        .container {
+        #card-container {
             display: grid;
             grid-template-columns: auto auto auto;
             padding: 10px;
@@ -24,11 +24,47 @@
         .container > div {
             margin: 10px;
         }
+        .input-group {
+            text-align: center;
+        }
     </style>
+    <script>
+        function mySearch() {
+            // Declare variables
+            var input, filter, tr, td, i, txtValue;
+            input = document.getElementById("myProductInput");
+            filter = input.value.toUpperCase();
+            tr = document.getElementsByClassName("card");
+            console.log(tr)
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByClassName("card-title")[0];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 <div class="container">
+    <div class="input-group">
+        <span class="input-group-text" id="basic-addon1">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+        </span>
+        <input type="text" id="myProductInput" onkeyup="mySearch()" class="form-control" placeholder="Знайти по назві" aria-label="Input group example"
+               aria-describedby="basic-addon1">
+    </div>
+</div>
+<div class="container" id="card-container">
     <div class="card" style="width: 18rem;" th:each="product : *{products}">
         <div class="card-body">
             <h5 class="card-title" th:text="${product.name}">Card title</h5>

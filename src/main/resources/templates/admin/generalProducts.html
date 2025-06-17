@@ -17,12 +17,36 @@
             padding-top: 20px;
         }
     </style>
+    <script>
+        function mySearch() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myProductInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("productTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:replace="fragments/headerAdmin :: header"></div>
 <div class="container">
     <h3 class="text-center">Загальні продукти</h3>
-    <table class="table">
+    <table class="table" id="productTable">
+        <thead>
         <tr>
             <th>ID</th>
             <th>ІМ'Я</th>
@@ -31,6 +55,26 @@
             <th>URLs</th>
             <th>ОНОВИТИ</th>
         </tr>
+        <tr>
+            <th></th>
+            <th>
+                <div class="input-group">
+                    <span class="input-group-text" id="basic-addon1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                        </svg>
+                    </span>
+                    <input type="text" id="myProductInput" onkeyup="mySearch()" class="form-control" placeholder="Знайти по імені" aria-label="Input group example"
+                           aria-describedby="basic-addon1">
+                </div>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
         <tr th:each="generalPr : ${generalProducts}">
             <td th:utext="${generalPr.id()}"></td>
             <td><p th:utext="${generalPr.name()}"></p></td>
@@ -39,6 +83,7 @@
             <td><a th:href="${generalPr.shopProducts().getFirst().url()}">Посилання</a></td>
             <td><a class="btn btn-success rounded-pill px-3" th:href="@{/admin/generalProducts/{path}(path=${generalPr.id()})}">Оновити</a></td>
         </tr>
+        </tbody>
     </table>
 </div>
 </body>
