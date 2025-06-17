@@ -53,7 +53,7 @@
         }
 
         .table-lock-height > tbody {
-            height: 68vh;
+            height: 62vh;
         }
 
         .table-custom-width {
@@ -79,6 +79,51 @@
             }
         }
     </style>
+    <script>
+        function mySearchGeneral() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myGeneralInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("generalTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        function mySearchShop() {
+            // Declare variables
+            var input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("myShopInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("shopTable");
+            tr = table.getElementsByTagName("tr");
+
+            // Loop through all table rows, and hide those who don't match the search query
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
+    </script>
 </head>
 <body>
 <div th:replace="fragments/headerAdmin :: header"></div>
@@ -90,12 +135,27 @@
                 <button type="submit" class="savebtn btn btn-primary" name="action" value="mapShopGeneral">Зв'язати продукти</button>
             </div>
             <h2 th:text="${shopProducts.size()}"></h2>
-            <table class="table table-striped table-fixed table-lock-height table-custom-width">
+            <table id="shopTable" class="table table-striped table-fixed table-lock-height table-custom-width">
                 <thead>
                     <tr>
                         <th>ID</th>
                         <th>НАЗВА</th>
                         <th>URL</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th>
+                            <div class="input-group">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                </span>
+                                <input type="text" id="myShopInput" onkeyup="mySearchShop()" class="form-control" placeholder="Знайти по назві" aria-label="Input group example"
+                                       aria-describedby="basic-addon1">
+                            </div>
+                        </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -118,12 +178,27 @@
                 <button type="submit" class="savebtn btn btn-primary" name="action" value="createNewGeneral">Створити загальний</button>
             </div>
             <h2 th:text="${generalProducts.size()}"></h2>
-            <table class="table table-striped table-fixed table-lock-height table-custom-width">
+            <table id="generalTable" class="table table-striped table-fixed table-lock-height table-custom-width">
                 <thead>
                 <tr>
                     <th>ID</th>
                     <th>НАЗВА</th>
                     <th>URL</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <div class="input-group">
+                                <span class="input-group-text">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                    </svg>
+                                </span>
+                            <input type="text" id="myGeneralInput" onkeyup="mySearchGeneral()" class="form-control" placeholder="Знайти по назві" aria-label="Input group example"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody>
